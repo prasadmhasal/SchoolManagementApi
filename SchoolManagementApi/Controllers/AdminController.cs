@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SchoolManagement.Model;
 using SchoolManagementApi.Context;
 
 namespace SchoolManagementApi.Controllers
@@ -24,10 +25,11 @@ namespace SchoolManagementApi.Controllers
         }
 
         [Route("StudentRequestDelete/{id}")]
-        [HttpPost]
+        [HttpDelete]
         public IActionResult StudentRequestDelete(int id)
         {
-            var data = db.studentRequests.FirstOrDefault(x => x.studentRequestId == id);
+            
+            var data = db.studentRequests.Find(id);
 
             if (data != null)
             {
@@ -37,6 +39,18 @@ namespace SchoolManagementApi.Controllers
             }
 
             return NotFound("Request not found");
+        }
+
+
+        [Route("AddStudent")]
+        [HttpPost]
+        public IActionResult AddStudent(AddStudent a)
+        {
+            a.AddMisstiondate = DateTime.Now.ToString();
+            db.Database.ExecuteSqlRaw($"EXEC ADDSTUDENT '{a.StudentUser}','{a.Studentpass}','{a.fullname}','{a.Email}','{a.Contect}','{a.Standard}','{a.AddMisstiondate}'");
+            var urole = "Student";
+            db.Database.ExecuteSqlRaw($"Exec AddUser '{a.StudentUser}','{a.Studentpass}','{urole}'");
+            return Ok("Student Added successfully..!!!");
         }
     }
 }
