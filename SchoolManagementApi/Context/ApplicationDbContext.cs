@@ -14,5 +14,6 @@ namespace SchoolManagementApi.Context
         public DbSet<AddStudent> Student { get; set; }
 
         public DbSet<Users> Users { get; set; }
+        public DbSet<AddTeacher> Teachers { get; set; }
     }
 }
