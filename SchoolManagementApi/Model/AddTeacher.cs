@@ -23,5 +23,8 @@ namespace SchoolManagementApi.Model
 
         public string qualification{ get; set; }
 
+        public string Joindate { get; set; }
+        public double Salary { get; set; }
+
     }
 }
