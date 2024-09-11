@@ -92,8 +92,16 @@ namespace SchoolManagementApi.Controllers
         [HttpPost]
         public IActionResult SignIn(Users u )
         {
-            var data = db.Users.FromSqlRaw($"AuthUser '{u.UserName}','{u.Password}'");
-            return Ok(data);
+            var data = db.Users.FromSqlRaw($"AuthUser '{u.UserName}','{u.Password}'").AsEnumerable().FirstOrDefault();
+
+            if (data != null)
+            {
+                return Ok(data);
+            }
+            else
+            {
+                return Unauthorized("Invalid username or password"); 
+            }
         }
 
     }
