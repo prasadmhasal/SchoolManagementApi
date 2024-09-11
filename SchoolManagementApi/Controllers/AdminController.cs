@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Model;
 using SchoolManagementApi.Context;
-using SchoolManagementApi.Migrations;
+
 using SchoolManagementApi.Model;
 
 namespace SchoolManagementApi.Controllers
@@ -71,10 +71,30 @@ namespace SchoolManagementApi.Controllers
 
         //[Route("GetLeaveRequest")]
         //[HttpGet]
-        //public IActionResult GetLeaveRequest() 
+        //public IActionResult GetLeaveRequest()
         //{
         //    var data = db.TeacherLeaveRequest.ToList();
         //    return Ok(data);
         //}
+
+        [Route("Addlabrarian")]
+        [HttpPost]
+        public IActionResult Addlabrarian(AddLibrarian l)
+        {
+            l.Joindate = DateTime.Now.ToString();
+            db.Database.ExecuteSqlRaw($"Exec AddLibrarian '{l.LibrarianUser}','{l.Librarianpass}','{l.LibrarianName}','{l.Email}','{l.Contact}','{l.Joindate}','{l.Salary}'");
+            var urole = "labrarian";
+            db.Database.ExecuteSqlRaw($"Exec AddUser '{l.LibrarianUser}','{l.Librarianpass}','{urole}'");
+            return Ok("Labrarian added successfully ");
+        }
+
+        [Route("SignIn")]
+        [HttpPost]
+        public IActionResult SignIn(Users u )
+        {
+            var data = db.Users.FromSqlRaw($"AuthUser '{u.UserName}','{u.Password}'");
+            return Ok(data);
+        }
+
     }
 }

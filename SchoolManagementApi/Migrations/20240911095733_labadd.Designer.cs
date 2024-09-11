@@ -11,8 +11,8 @@ using SchoolManagementApi.Context;
 namespace SchoolManagementApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240910080439_teacher")]
-    partial class teacher
+    [Migration("20240911095733_labadd")]
+    partial class labadd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,45 @@ namespace SchoolManagementApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("SchoolManagement.Model.AddLibrarian", b =>
+                {
+                    b.Property<int>("LibararianId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LibararianId"));
+
+                    b.Property<long>("Contact")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Joindate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LibrarianName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LibrarianUser")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Librarianpass")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Salary")
+                        .HasColumnType("float");
+
+                    b.HasKey("LibararianId");
+
+                    b.ToTable("Librarian");
+                });
 
             modelBuilder.Entity("SchoolManagement.Model.AddStudent", b =>
                 {
@@ -99,6 +138,13 @@ namespace SchoolManagementApi.Migrations
 
                     b.Property<long>("Contact")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("Joindate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Salary")
+                        .HasColumnType("float");
 
                     b.Property<string>("Standard")
                         .IsRequired()
