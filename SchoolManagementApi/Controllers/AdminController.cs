@@ -33,10 +33,14 @@ namespace SchoolManagementApi.Controllers
             
             var data = db.studentRequests.Find(id);
 
-            
+            if(data != null )
+            {
+
                 db.studentRequests.Remove(data);
                 db.SaveChanges();
                 return Ok("Request deleted successfully");
+            }
+            return Ok("student request no found ");
             
 
             
@@ -111,23 +115,15 @@ namespace SchoolManagementApi.Controllers
             return Ok(data);
         }
 
-        [Route("PostLeaveRequest/{TeacherId}")]
+        [Route("PostLeaveRequest/{Id}")]
         [HttpDelete]
-        public IActionResult PostLeaveRequest(int TeacherId)
+        public IActionResult PostLeaveRequest(int Id)
         {
-            //db.Database.ExecuteSqlRaw($"Exec deleteTeacherLeave '{TeacherId}'");
-            //return Ok("Update Successfully ");
+         
 
-            var data = db.TeacherLeaves.Find(TeacherId);
-
-            if (data != null)
-            {
-                db.TeacherLeaves.Remove(data);
-                db.SaveChanges();
-                return Ok("Request deleted successfully");
-            }
-
-            return NotFound("Request not found");
+            db.Database.ExecuteSqlRaw($"Exec deleteTeacherLeave '{Id}'");
+            return Ok("Teacher LeaveRequest Deleted ");
+            
         }
 
     }
