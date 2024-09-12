@@ -11,8 +11,8 @@ using SchoolManagementApi.Context;
 namespace SchoolManagementApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240911095733_labadd")]
-    partial class labadd
+    [Migration("20240912104745_tes")]
+    partial class tes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

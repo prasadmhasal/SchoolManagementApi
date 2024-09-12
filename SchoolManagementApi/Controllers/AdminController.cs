@@ -33,14 +33,13 @@ namespace SchoolManagementApi.Controllers
             
             var data = db.studentRequests.Find(id);
 
-            if (data != null)
-            {
+            
                 db.studentRequests.Remove(data);
                 db.SaveChanges();
                 return Ok("Request deleted successfully");
-            }
+            
 
-            return NotFound("Request not found");
+            
         }
 
 
@@ -51,8 +50,8 @@ namespace SchoolManagementApi.Controllers
             a.AddMisstiondate = DateTime.Now.ToString();
             db.Database.ExecuteSqlRaw($"EXEC ADDSTUDENT '{a.StudentUser}','{a.Studentpass}','{a.fullname}','{a.Email}','{a.Contect}','{a.Standard}','{a.AddMisstiondate}'");
             var urole = "Student";
-            var TeacherId = 0;
-            db.Database.ExecuteSqlRaw($"Exec AddUser '{a.StudentUser}','{a.Studentpass}','{urole}','{a.StudentId}','{TeacherId}'");
+        
+            db.Database.ExecuteSqlRaw($"Exec AddUser '{a.StudentUser}','{a.Studentpass}','{urole}'");
             return Ok("Student Added successfully..!!!");
         }
 
@@ -102,6 +101,33 @@ namespace SchoolManagementApi.Controllers
             {
                 return Unauthorized("Invalid username or password"); 
             }
+        }
+
+        [Route("GetLeaveRequest")]
+        [HttpGet]
+        public IActionResult GetLeaveRequest()
+        {
+            var data = db.TeacherLeaves.ToList();
+            return Ok(data);
+        }
+
+        [Route("PostLeaveRequest/{TeacherId}")]
+        [HttpDelete]
+        public IActionResult PostLeaveRequest(int TeacherId)
+        {
+            //db.Database.ExecuteSqlRaw($"Exec deleteTeacherLeave '{TeacherId}'");
+            //return Ok("Update Successfully ");
+
+            var data = db.TeacherLeaves.Find(TeacherId);
+
+            if (data != null)
+            {
+                db.TeacherLeaves.Remove(data);
+                db.SaveChanges();
+                return Ok("Request deleted successfully");
+            }
+
+            return NotFound("Request not found");
         }
 
     }

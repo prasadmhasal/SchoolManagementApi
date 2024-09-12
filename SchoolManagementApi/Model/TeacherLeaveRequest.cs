@@ -9,7 +9,9 @@ namespace SchoolManagementApi.Model
         public int LeaveRequestId { get; set; }
 
         [Required]
-        public int Teacher { get; set; }
+        public int TeacherId { get; set; }
+
+        public string UserName { get; set; }
 
         [Required]
         public string StartDate { get; set; }
