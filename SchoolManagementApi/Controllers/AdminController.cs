@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SchoolManagement.Model;
 using SchoolManagementApi.Context;
 
@@ -68,6 +69,7 @@ namespace SchoolManagementApi.Controllers
             db.Database.ExecuteSqlRaw($"exec AddTeachers '{t.TeacherUser}','{t.Teacherpass}','{t.TecherName}','{t.Subject}','{t.Standard}','{t.TeacherEmail}','{t.Contact}','{t.qualification}','{t.Joindate}','{t.Salary}'");
             var urole = "Teacher";
             db.Database.ExecuteSqlRaw($"Exec AddUser '{t.TeacherUser}','{t.Teacherpass}','{urole}'");
+            db.Database.ExecuteSqlRaw($"Exec AddSubject '{t.Subject}'");
             return Ok("Teacher Added successfully");
 
         }
@@ -126,5 +128,56 @@ namespace SchoolManagementApi.Controllers
             
         }
 
+        [Route("GetEvents")]
+        [HttpGet]
+        public async Task<IActionResult> GetEvents()
+        {
+            var events = await db.Event.ToListAsync();
+            return Ok(events);
+        }
+        [Route("CreateEvent")]
+        [HttpPost]
+        public async Task<IActionResult> createEvents(Event events)
+        {
+            db.Event.Add(events);
+            await db.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetEvents), new { id = events.Id }, events);
+        }
+        [Route("GetEventsById/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetEventsById(int id)
+        {
+            var eventItem = await db.Event.FindAsync(id);
+            if (eventItem == null)
+            {
+                return NotFound();
+            }
+            return Ok(eventItem);
+        }
+        [Route("updateEvent/{id}")]
+        [HttpPut]
+        public async Task<IActionResult> updateEvent(int id, Event eventItem)
+        {
+            if (id != eventItem.Id)
+            {
+                return BadRequest();
+            }
+            db.Entry(eventItem).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+            return NoContent();
+        }
+        [Route("DeleteEvent/{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteEvent(int id)
+        {
+            var events = await db.Event.FindAsync(id);
+            if (events == null)
+            {
+                return NotFound();
+            }
+            db.Event.Remove(events);
+            await db.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }

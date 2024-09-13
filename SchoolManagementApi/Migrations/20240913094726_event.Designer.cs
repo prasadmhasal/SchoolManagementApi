@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolManagementApi.Context;
 
@@ -11,9 +12,11 @@ using SchoolManagementApi.Context;
 namespace SchoolManagementApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240913094726_event")]
+    partial class @event
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,23 +236,6 @@ namespace SchoolManagementApi.Migrations
                     b.HasKey("studentRequestId");
 
                     b.ToTable("studentRequests");
-                });
-
-            modelBuilder.Entity("SchoolManagementApi.Model.Subject", b =>
-                {
-                    b.Property<int>("SubjectId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubjectId"));
-
-                    b.Property<string>("SubjectName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("SubjectId");
-
-                    b.ToTable("Subject");
                 });
 
             modelBuilder.Entity("SchoolManagementApi.Model.TeacherLeaveRequest", b =>
