@@ -19,6 +19,7 @@ namespace SchoolManagementApi.Context
         public DbSet<TeacherLeaveRequest> TeacherLeaves { get; set; }
         public DbSet<Event> Event { get; set; }
         public DbSet<Subject> Subject { get; set; }
+        public DbSet<Timetable> Timetables { get; set; }
 
 
     }

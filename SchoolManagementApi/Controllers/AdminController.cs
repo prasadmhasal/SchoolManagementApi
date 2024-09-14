@@ -6,6 +6,7 @@ using SchoolManagement.Model;
 using SchoolManagementApi.Context;
 
 using SchoolManagementApi.Model;
+using System.Xml;
 
 namespace SchoolManagementApi.Controllers
 {
@@ -31,10 +32,10 @@ namespace SchoolManagementApi.Controllers
         [HttpDelete]
         public IActionResult StudentRequestDelete(int id)
         {
-            
+
             var data = db.studentRequests.Find(id);
 
-            if(data != null )
+            if (data != null)
             {
 
                 db.studentRequests.Remove(data);
@@ -42,9 +43,9 @@ namespace SchoolManagementApi.Controllers
                 return Ok("Request deleted successfully");
             }
             return Ok("student request no found ");
-            
 
-            
+
+
         }
 
 
@@ -55,7 +56,7 @@ namespace SchoolManagementApi.Controllers
             a.AddMisstiondate = DateTime.Now.ToString();
             db.Database.ExecuteSqlRaw($"EXEC ADDSTUDENT '{a.StudentUser}','{a.Studentpass}','{a.fullname}','{a.Email}','{a.Contect}','{a.Standard}','{a.AddMisstiondate}'");
             var urole = "Student";
-        
+
             db.Database.ExecuteSqlRaw($"Exec AddUser '{a.StudentUser}','{a.Studentpass}','{urole}'");
             return Ok("Student Added successfully..!!!");
         }
@@ -95,7 +96,7 @@ namespace SchoolManagementApi.Controllers
 
         [Route("SignIn")]
         [HttpPost]
-        public IActionResult SignIn(Users u )
+        public IActionResult SignIn(Users u)
         {
             var data = db.Users.FromSqlRaw($"AuthUser '{u.UserName}','{u.Password}'").AsEnumerable().FirstOrDefault();
 
@@ -105,7 +106,7 @@ namespace SchoolManagementApi.Controllers
             }
             else
             {
-                return Unauthorized("Invalid username or password"); 
+                return Unauthorized("Invalid username or password");
             }
         }
 
@@ -121,11 +122,11 @@ namespace SchoolManagementApi.Controllers
         [HttpDelete]
         public IActionResult PostLeaveRequest(int Id)
         {
-         
+
 
             db.Database.ExecuteSqlRaw($"Exec deleteTeacherLeave '{Id}'");
             return Ok("Teacher LeaveRequest Deleted ");
-            
+
         }
 
         [Route("GetEvents")]
@@ -178,6 +179,43 @@ namespace SchoolManagementApi.Controllers
             db.Event.Remove(events);
             await db.SaveChangesAsync();
             return NoContent();
+        }
+
+
+
+        [Route("AddTimeTable")]
+        [HttpPost]
+
+        public IActionResult AddTime(Timetable tt)
+        {
+            db.Timetables.Add(tt);
+            db.SaveChanges();
+            return Ok("TimeTable Added Successfully");
+        }
+
+        [Route("GetTimeTable")]
+        [HttpGet]
+        public IActionResult GetTime()
+        {
+            var curricula = db.Timetables.ToList();
+            return Ok(curricula);
+        }
+
+
+        [Route("FetchSubject")]
+        [HttpGet]
+        public IActionResult FetchSubject()
+        {
+           var data = db.Subject.FromSqlRaw("exec fetchsubject").ToList();
+            return Ok(data);
+        }
+
+        [Route("FetchClass")]
+        [HttpGet]
+        public IActionResult FetchClass()
+        {
+            var data = db.Teachers.FromSqlRaw("exec fetchClass").ToList();
+            return Ok(data);
         }
     }
 }
