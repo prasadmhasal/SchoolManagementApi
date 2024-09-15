@@ -54,7 +54,8 @@ namespace SchoolManagementApi.Controllers
         public IActionResult AddStudent(AddStudent a)
         {
             a.AddMisstiondate = DateTime.Now.ToString();
-            db.Database.ExecuteSqlRaw($"EXEC ADDSTUDENT '{a.StudentUser}','{a.Studentpass}','{a.fullname}','{a.Email}','{a.Contect}','{a.Standard}','{a.AddMisstiondate}','{a.Fees}'");
+            a.FeesStatus = "Pending";
+            db.Database.ExecuteSqlRaw($"EXEC ADDSTUDENT '{a.StudentUser}','{a.Studentpass}','{a.fullname}','{a.Email}','{a.Contect}','{a.Standard}','{a.AddMisstiondate}','{a.Fees}','{a.FeesStatus}'");
             var urole = "Student";
 
             db.Database.ExecuteSqlRaw($"Exec AddUser '{a.StudentUser}','{a.Studentpass}','{urole}'");

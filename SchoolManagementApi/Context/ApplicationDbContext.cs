@@ -20,7 +20,9 @@ namespace SchoolManagementApi.Context
         public DbSet<Event> Event { get; set; }
         public DbSet<Subject> Subject { get; set; }
         public DbSet<Timetable> Timetables { get; set; }
-
+        public DbSet<Assignments> assignments { get; set; }
+        public DbSet<AssignmentSubmission> assignmentSubmissions { get; set; }
+        public DbSet<Attendance> Attendances { get; set; }
 
     }
 }
