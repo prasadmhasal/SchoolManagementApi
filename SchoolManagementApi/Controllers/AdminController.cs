@@ -54,7 +54,7 @@ namespace SchoolManagementApi.Controllers
         public IActionResult AddStudent(AddStudent a)
         {
             a.AddMisstiondate = DateTime.Now.ToString();
-            db.Database.ExecuteSqlRaw($"EXEC ADDSTUDENT '{a.StudentUser}','{a.Studentpass}','{a.fullname}','{a.Email}','{a.Contect}','{a.Standard}','{a.AddMisstiondate}'");
+            db.Database.ExecuteSqlRaw($"EXEC ADDSTUDENT '{a.StudentUser}','{a.Studentpass}','{a.fullname}','{a.Email}','{a.Contect}','{a.Standard}','{a.AddMisstiondate}','{a.Fees}'");
             var urole = "Student";
 
             db.Database.ExecuteSqlRaw($"Exec AddUser '{a.StudentUser}','{a.Studentpass}','{urole}'");
@@ -216,6 +216,17 @@ namespace SchoolManagementApi.Controllers
         {
             var data = db.Teachers.FromSqlRaw("exec fetchClass").ToList();
             return Ok(data);
+        }
+
+
+
+        [Route("FeesPay/{StudentUse}")]
+        [HttpGet]
+        public IActionResult FeesPay(string StudentUse)
+        {
+            var data = db.Student.FromSqlRaw($"exec fetchFees '{StudentUse}'");
+            return Ok(data);
+
         }
     }
 }
