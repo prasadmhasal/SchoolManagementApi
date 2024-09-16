@@ -229,5 +229,17 @@ namespace SchoolManagementApi.Controllers
             return Ok(data);
 
         }
-    }
+
+
+
+
+		[Route("LandingPage")]
+		[HttpPost]
+		public IActionResult LandingPage(StudentRequest e)
+		{
+			db.studentRequests.Add(e);
+			db.SaveChanges();
+			return Ok("We will get in touch with you soon!");
+		}
+	}
 }

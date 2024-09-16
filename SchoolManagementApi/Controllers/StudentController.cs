@@ -25,22 +25,15 @@ namespace SchoolManagementApi.Controllers
             return Ok(data);
         }
 
-        [Route("UpdateFeesStatus")]
+
+
+        [Route("UpdateFeesStatus/{studentUser}")]
         [HttpPut]
-        public IActionResult UpdateFeesStatus(string StudentUser, UpdateFeeStatusModel model)
+        public IActionResult UpdateFeesStatus(string studentUser )
         {
-            var student = db.Student.FirstOrDefault(s => s.StudentUser == StudentUser);
-
-            if (student == null)
-            {
-                return NotFound(new { success = false, message = "Student not found" });
-            }
-
-            // Only update the fee status
-            student.FeesStatus = model.FeesStatus ?? student.FeesStatus;
-            db.SaveChanges();
-
-            return Ok(new { success = true });
+            db.Database.ExecuteSqlRaw($"Exec UpdateFees '{studentUser}'");
+            // Check if the studentUser and feesStatus are not null or empty
+            return Ok();
         }
     }
 }
